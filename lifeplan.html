@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Life-Plan — Neon Celle</title>
+  <meta name="description" content="Neon Celle Life-Plan – Bleib immer up to date mit unseren aktuellen Events." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="lifeplan.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+  <!-- ===== NAVIGATION (wird aus header.html geladen) ===== -->
+  <div id="site-header"></div>
+  <script src="header-loader.js" data-type="public"></script>
+  
+  <!-- ===== HERO ===== -->
+  <section class="lp-hero">
+    <div class="lp-hero-bg"></div>
+    
+    <div class="container lp-hero-content">
+       <h1>Life <span class="accent">Plan</span></h1>
+       <p>Unsere Termine und Highlights in der Übersicht — bleib immer up to date.</p>
+       
+       <div class="countdown-card" id="countdown">
+         <div class="timebox"><span id="days">0</span>Tage</div>
+         <div class="timebox"><span id="hours">0</span>Stunden</div>
+         <div class="timebox"><span id="minutes">0</span>Minuten</div>
+         <div class="timebox"><span id="seconds">0</span>Sekunden</div>
+       </div>
+       <span class="countdown-label" id="countdown-label" style="display:block; margin-top:10px; font-size:0.82rem; color:#aaa;"></span>
+    </div>
+  </section>
+  <!-- ===== GESAMTLEISTE (Jahres-Fortschritt) ===== -->
+  <section class="section lp-progress-section" id="plan-overview">
+    <div class="container">
+      <span class="section-label">Jahresüberblick</span>
+      <h2 class="section-title">Event <span class="accent">Leiste</span></h2>
+      <p class="section-subtitle">Alle Events in der Jahresübersicht — automatisch sortiert.</p>
+
+      <div class="year-progress-wrap">
+        <div class="year-progress-header">
+          <span class="year-label">2026</span>
+          <span class="year-count" id="yearCount">0 Events</span>
+        </div>
+        <div class="year-bar">
+          <div class="year-bar-track">
+            <div class="month-markers" id="monthMarkers"></div>
+            <div class="event-dots" id="eventDots"></div>
+          </div>
+        </div>
+        <div class="year-months">
+          <span>Jan</span><span>Feb</span><span>Mär</span><span>Apr</span>
+          <span>Mai</span><span>Jun</span><span>Jul</span><span>Aug</span>
+          <span>Sep</span><span>Okt</span><span>Nov</span><span>Dez</span>
+        </div>
+      </div>
+
+      <div class="month-cards" id="monthCards"></div>
+    </div>
+  </section>
+
+  <!-- ===== TIMELINE (ID ANGEPASST AN DEINE LIFEPLAN.JS!) ===== -->
+  <section class="section lp-timeline-section">
+    <div class="container">
+      <span class="section-label">Alle Einträge</span>
+      <h2 class="section-title">Event <span class="accent">Timeline</span></h2>
+      
+      <!-- FIXED: ID von lpTimeline auf eventsTimeline geändert, damit das JavaScript andocken kann -->
+      <div class="lp-timeline" id="eventsTimeline">
+        <div class="lp-empty">
+          <div class="lp-empty-icon">📅</div>
+          <p>Lade Events vom Server...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">
+        <span class="bolt">⚡</span>
+        <span>NEON CELLE</span>
+      </div>
+      <p class="footer-text">Teil der <a href="https://www.ecg-celle.de" target="_blank" class="footer-link">ECG Celle</a></p>
+      <p class="footer-copy">© 2026 Neon Celle. Mit ❤️ gebaut.</p>
+    </div>
+  </footer>
+
+  <script src="lifeplan.js"></script>
+</body>
+</html>

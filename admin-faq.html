@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — FAQ Manager</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <script src="config.js"></script>
+</head>
+<body class="admin-body">
+
+  <!-- ===== NAVIGATION (wird aus header-admin.html geladen) ===== -->
+  <div id="site-header"></div>
+  <script src="header-loader.js" data-type="admin"></script>
+
+  <main class="admin-main-grid">
+    
+    <!-- LINKE SPALTE: FORMULAR -->
+    <section class="left-form-card">
+      <div style="margin-bottom: 20px;">
+        <div class="label-pink">Frage :</div>
+        <input type="text" id="input-frage" class="custom-input-box" placeholder="Fragenstellung">
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <div class="label-pink">Antwort:</div>
+        <textarea id="input-antwort" class="custom-textarea" rows="5" placeholder="Antworttext"></textarea>
+      </div>
+
+      <input type="hidden" id="edit-index" value="-1">
+      <button class="btn-submit-action" onclick="handleFormSubmit()" id="btn-submit-text">Eintrag Hinzufügen</button>
+    </section>
+    <!-- RECHTE SPALTE: TABELLE -->
+    <section class="right-table-card">
+      <h2 class="table-headline">Gespeicherte FAQ-Einträge</h2>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th style="width: 40%;">Frage</th>
+            <th style="width: 40%;">Antwort</th>
+            <th style="width: 20%;">Aktionen</th>
+          </tr>
+        </thead>
+        <tbody id="table-body-faq"></tbody>
+      </section>
+
+  </main>
+
+  <script>
+    let faqList = [];
+
+    window.addEventListener('DOMContentLoaded', () => {
+        loadDataFromServer();
+    });
+
+    // Holt die FAQs live über die Schnittstelle
+    function loadDataFromServer() {
+        fetch(API_BASE + '?action=faq_list')
+            .then(res => res.json())
+            .then(data => {
+                faqList = data;
+                renderTable();
+            })
+            .catch(err => console.error("Fehler beim Laden:", err));
+    }
+
+    // Baut die Tabelle auf der rechten Seite auf
+    function renderTable() {
+        const tbody = document.getElementById('table-body-faq');
+        tbody.innerHTML = "";
+
+        if(faqList.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#aaa; padding:20px;">Keine Einträge in der faq.json vorhanden.</td></tr>`;
+            return;
+        }
+
+        faqList.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-weight:bold; color:#ffffff;">${item.frage || '-'}</td>
+                <td style="color:#cacaca;">${item.antwort || '-'}</td>
+                <td>
+                    <div class="action-btn-group">
+                        <button class="btn-edit" onclick="editFaq(${index})">Bearbeiten</button>
+                        <button class="btn-delete" onclick="deleteFaq(${index})">Löschen</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Formulardaten an die Schnittstelle absenden
+    function handleFormSubmit() {
+        const frage = document.getElementById('input-frage').value;
+        const antwort = document.getElementById('input-antwort').value;
+        const editIndex = document.getElementById('edit-index').value;
+
+        if(!frage || !antwort) { alert("Bitte fülle Frage und Antwort aus!"); return; }
+
+        fetch(API_BASE + '?action=faq_save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ editIndex: editIndex, frage: frage, antwort: antwort })
+        })
+        .then(res => res.json())
+        .then(resData => {
+            if(resData.success) {
+                faqList = resData.data;
+                renderTable();
+                clearForm();
+                alert("Erfolgreich gespeichert!");
+            }
+        })
+        .catch(err => alert("Verbindung zum Server fehlgeschlagen."));
+    }
+
+    // In den Editier-Modus wechseln
+    function editFaq(index) {
+        const item = faqList[index];
+        document.getElementById('input-frage').value = item.frage || "";
+        document.getElementById('input-antwort').value = item.antwort || "";
+        document.getElementById('edit-index').value = index;
+        document.getElementById('btn-submit-text').innerText = "Änderung Speichern";
+    }
+
+    // Eintrag löschen
+    function deleteFaq(index) {
+        if(confirm("Diesen FAQ-Eintrag wirklich löschen?")) {
+            fetch(API_BASE + '?action=faq_delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ index: index })
+            })
+            .then(res => res.json())
+            .then(resData => {
+                if(resData.success) {
+                    faqList = resData.data;
+                    renderTable();
+                }
+            });
+        }
+    }
+
+    function clearForm() {
+        document.getElementById('input-frage').value = "";
+        document.getElementById('input-antwort').value = "";
+        document.getElementById('edit-index').value = "-1";
+        document.getElementById('btn-submit-text').innerText = "Eintrag Hinzufügen";
+    }
+  </script>
+</body>
+</html>

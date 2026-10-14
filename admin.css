@@ -1,0 +1,169 @@
+/* =============================================
+   NEON CELLE — Admin Panel
+   Nutzt dieselben CSS-Variablen wie style.css,
+   damit Admin-Bereich und Hauptseite zusammenpassen.
+   ============================================= */
+
+body.admin-body {
+  font-family: var(--font-alt);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding-top: 100px; /* Platz für die schwebende Navbar */
+}
+
+/* ---------- Layout: Formular links, Tabelle rechts ---------- */
+.admin-main-grid {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 30px;
+  box-sizing: border-box;
+}
+@media (max-width: 992px) {
+  .admin-main-grid { grid-template-columns: 1fr; }
+}
+
+.left-form-card, .right-table-card {
+  background: var(--bg-card);
+  border: 2px solid var(--accent-neon);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-sizing: border-box;
+}
+
+/* ---------- Formulare ---------- */
+.label-pink {
+  color: var(--accent-pink);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.form-group { margin-bottom: 18px; }
+.input-row-flex { display: flex; gap: 15px; }
+.input-col { flex: 1; }
+
+.custom-input-box, .custom-textarea, .custom-select, .form-control {
+  width: 100%;
+  background: transparent;
+  border: 2px solid var(--accent-neon);
+  border-radius: var(--radius-xl);
+  color: var(--text-primary);
+  font-family: var(--font-alt);
+  font-size: 0.9rem;
+  padding: 0 20px;
+  height: 45px;
+  box-sizing: border-box;
+}
+.custom-textarea, textarea.form-control {
+  height: auto;
+  padding: 14px 20px;
+  resize: none;
+}
+.custom-select { cursor: pointer; -webkit-appearance: none; background: var(--bg-card); }
+.custom-input-box:focus, .custom-textarea:focus, .custom-select:focus, .form-control:focus {
+  outline: none;
+  border-color: var(--accent-pink);
+}
+.custom-input-box::-webkit-calendar-picker-indicator {
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(20deg);
+  cursor: pointer;
+}
+
+.btn-submit-action, .btn-submit, .btn-add-question {
+  width: 100%;
+  background: transparent;
+  border: 2px solid var(--accent-neon);
+  color: var(--text-primary);
+  padding: 14px;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--radius-xl);
+  transition: var(--transition);
+  margin-top: 10px;
+}
+.btn-add-question { border-style: dashed; color: var(--accent-neon); }
+.btn-submit-action:hover, .btn-submit:hover {
+  background: var(--accent-neon);
+  color: #000;
+}
+.btn-add-question:hover { background: var(--accent-neon-glow); }
+
+/* ---------- Tabelle ---------- */
+.right-table-card { overflow-x: auto; }
+.table-headline {
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #222;
+}
+.admin-table { width: 100%; border-collapse: collapse; text-align: left; }
+.admin-table th {
+  color: var(--accent-pink);
+  border-bottom: 2px solid var(--accent-neon);
+  padding: 12px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.admin-table td { padding: 12px; border-bottom: 1px solid #1a1a1a; font-size: 0.9rem; vertical-align: middle; color: var(--text-primary); }
+.table-img { width: 45px; height: 55px; object-fit: cover; border-radius: 8px; background: #222; }
+
+.action-btn-group { display: flex; gap: 10px; }
+.btn-edit, .btn-delete {
+  border: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.btn-edit { background: var(--accent-light); color: #000; }
+.btn-delete { background: var(--accent-pink); color: #fff; }
+
+/* ---------- Bild-Upload-Box (Team-Editor) ---------- */
+.image-upload-box {
+  width: 140px; height: 180px;
+  background: var(--accent-light);
+  border: 2px dashed transparent;
+  border-radius: var(--radius-md);
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  color: #000; font-weight: 700; font-size: 0.85rem; text-align: center;
+  cursor: pointer; position: relative; overflow: hidden; flex-shrink: 0; padding: 10px; box-sizing: border-box;
+}
+.image-upload-box.dragover { background: var(--accent-coral); border-color: #fff; color: #fff; }
+.image-upload-box input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.image-upload-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+.form-inputs-right { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.social-group { margin-bottom: 12px; }
+.social-input-wrapper { display: flex; align-items: center; gap: 12px; margin-top: 5px; }
+.social-icon-box { width: 30px; display: flex; justify-content: center; align-items: center; }
+
+/* ---------- Umfrage / Survey-Builder ---------- */
+.admin-section { padding: 20px 20px 60px; display: flex; justify-content: center; }
+.admin-container { width: 100%; max-width: 750px; background: var(--bg-card); border: 2px solid var(--accent-neon); border-radius: var(--radius-lg); padding: 40px; }
+.admin-title { font-family: var(--font-main); font-size: 2rem; font-weight: 900; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #222; }
+.checkbox-group { flex-direction: row; align-items: center; gap: 12px; padding: 10px 0; }
+.checkbox-group input { width: 20px; height: 20px; accent-color: var(--accent-neon); }
+.question-block { background: #080808; border: 1px solid #262626; padding: 25px; border-radius: var(--radius-md); margin-bottom: 20px; }
+.question-header { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 15px; }
+.question-title-label { color: var(--accent-pink); font-weight: 700; min-width: 70px; }
+.type-select { background: #111; color: #fff; border: 1px solid #444; padding: 8px; border-radius: var(--radius-sm); cursor: pointer; }
+.options-list { display: flex; flex-direction: column; gap: 10px; padding-left: 15px; }
+.option-item { display: flex; gap: 10px; }
+.btn-add-option { background: none; border: 1px dashed #555; color: #aaa; padding: 8px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; }
+.btn-add-option:hover { border-color: var(--accent-neon); color: var(--accent-neon); }
+.hidden { display: none !important; }
+.status-msg { text-align: center; padding: 10px; border-radius: var(--radius-sm); font-weight: 700; margin-top: 15px; color: #fff; }
+.status-success { background: #155724; }
+.status-error { background: #721c24; }

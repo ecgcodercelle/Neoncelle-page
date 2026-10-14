@@ -1,0 +1,24 @@
+[
+  {
+    "date": "2026-07-12T18:30:00",
+    "title": "⚡ NEON Jugendabend",
+    "desc": "Gemeinsame Zeit, Glaube und Spaß. Sei dabei!",
+    "time": "18:30",
+    "type": "neon"
+  },
+  {
+    "date": "2026-08-02T08:00:00",
+    "endDate": "2026-08-2",
+    "title": "🏕️ Sommer-Freizeit",
+    "desc": "Die beste Woche des Jahres! Anmeldung ist ab jetzt offen.",
+    "time": "",
+    "type": "freizeit"
+  },
+  {
+    "date": "2026-09-04T19:30:00",
+    "title": "vorwerk",
+    "desc": "wir sin in vorwerk",
+    "time": "19:30",
+    "type": "freizeit"
+  }
+]

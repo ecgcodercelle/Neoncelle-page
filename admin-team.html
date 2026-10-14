@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Team Profil Editor</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <script src="config.js"></script>
+</head>
+<body class="admin-body">
+
+  <!-- ===== NAVIGATION (wird aus header-admin.html geladen) ===== -->
+  <div id="site-header"></div>
+  <script src="header-loader.js" data-type="admin"></script>
+
+  <main class="admin-main-grid">
+    <section class="left-form-card">
+      <div class="input-row-flex">
+        <div class="image-upload-box" id="drop-zone">
+          <span id="upload-text">Bild hierher ziehen</span>
+          <img id="preview-img-element" src="" style="display: none;" alt="Vorschau" />
+          <input type="file" id="input-image" accept="image/*">
+        </div>
+        <div class="form-inputs-right">
+          <div>
+            <div class="label-pink">NAME:</div>
+            <input type="text" id="input-name" class="custom-input-box">
+          </div>
+          <div>
+            <div class="label-pink">Dabei seit:</div>
+            <input type="text" id="input-seit" class="custom-input-box">
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <div class="label-pink">Über mich:</div>
+        <textarea id="input-ueber" class="custom-textarea" rows="4"></textarea>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <div class="label-pink">Fun fact:</div>
+        <input type="text" id="input-fun" class="custom-input-box">
+      </div>
+
+      <div class="label-pink" style="margin-bottom: 5px;">Erreichbar über:</div>
+      
+      <!-- Instagram Feld mit echtem SVG-Logo -->
+      <div class="social-group">
+        <div class="label-pink" style="font-size: 11px; padding-left: 42px;">Insta</div>
+        <div class="social-input-wrapper">
+          <div class="social-icon-box">
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #e1306c;"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          </div>
+          <input type="text" id="input-insta" class="custom-input-box" placeholder="Username">
+        </div>
+      </div>
+      
+      <!-- E-Mail Feld mit echtem SVG-Logo -->
+      <div class="social-group">
+        <div class="label-pink" style="font-size: 11px; padding-left: 42px;">E-Mail</div>
+        <div class="social-input-wrapper">
+          <div class="social-icon-box">
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #ffffff;"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </div>
+          <input type="email" id="input-email" class="custom-input-box" placeholder="E-Mail-Adresse">
+        </div>
+      </div>
+
+      <input type="hidden" id="edit-index" value="-1">
+      <button class="btn-submit-action" onclick="handleFormSubmit()" id="btn-submit-text">Hinzufügen</button>
+    </section>
+    <section class="right-table-card">
+      <h2 class="table-headline">Registrierte Teammitglieder</h2>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Bild</th>
+            <th>Name</th>
+            <th>Dabei seit</th>
+            <th>Über mich / Fun Fact</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody id="table-body-team"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    let teamList = [];
+    let fileToUpload = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+        loadDataFromServer();
+        setupDragAndDrop();
+    });
+
+    function loadDataFromServer() {
+        fetch(API_BASE + '?action=team_list').then(res => res.json()).then(data => { teamList = data; renderTable(); });
+    }
+
+    function setupDragAndDrop() {
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('input-image');
+        ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); }));
+        ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); }));
+        dropZone.addEventListener('drop', (e) => { e.preventDefault(); if(e.dataTransfer.files.length > 0) { fileInput.files = e.dataTransfer.files; showPreview(e.dataTransfer.files); } });
+        fileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) showPreview(e.target.files); });
+    }
+
+    function showPreview(file) {
+        if (!file) return; fileToUpload = file;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.getElementById('preview-img-element');
+            img.src = e.target.result; img.style.display = 'block';
+            document.getElementById('upload-text').style.display = 'none';
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('table-body-team'); tbody.innerHTML = "";
+        if(teamList.length === 0) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#aaa; padding:20px;">Keine Einträge.</td></tr>`; return; }
+        teamList.forEach((member, index) => {
+            const tr = document.createElement('tr');
+            const imgHtml = member.image ? `<img src="${bildUrl(member.image)}?v=${Date.now()}" class="table-img" />` : `Keins`;
+            tr.innerHTML = `
+                <td>${imgHtml}</td>
+                <td style="font-weight:bold;">${member.name || '-'}</td>
+                <td>${member.dabeiSeit || '-'}</td>
+                <td><div>${member.ueberMich || '-'}</div><div style="font-size:11px; color:#DE5D93;">Fact: ${member.funFact || '-'}</div></td>
+                <td><div class="action-btn-group"><button class="btn-edit" onclick="editMember(${index})">Bearbeiten</button><button class="btn-delete" onclick="deleteMember(${index})">Löschen</button></div></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Absenden an die Schnittstelle
+    function handleFormSubmit() {
+        const name = document.getElementById('input-name').value; if(!name) return;
+        const formData = new FormData();
+        formData.append('editIndex', document.getElementById('edit-index').value);
+        formData.append('name', name);
+        formData.append('dabeiSeit', document.getElementById('input-seit').value);
+        formData.append('ueberMich', document.getElementById('input-ueber').value);
+        formData.append('funFact', document.getElementById('input-fun').value);
+        formData.append('instagram', document.getElementById('input-insta').value);
+        formData.append('email', document.getElementById('input-email').value);
+        if(fileToUpload) formData.append('bild', fileToUpload);
+
+        fetch(API_BASE + '?action=team_save', { method: 'POST', body: formData }).then(res => res.json()).then(resData => {
+            if(resData.success) { teamList = resData.data; renderTable(); clearForm(); alert("Erfolgreich auf Festplatte gespeichert!"); }
+        });
+    }
+
+    function editMember(index) {
+        const m = teamList[index];
+        document.getElementById('input-name').value = m.name || "";
+        document.getElementById('input-seit').value = m.dabeiSeit || "";
+        document.getElementById('input-ueber').value = m.ueberMich || "";
+        document.getElementById('input-fun').value = m.funFact || "";
+        document.getElementById('input-insta').value = m.instagram || "";
+        document.getElementById('input-email').value = m.email || "";
+        document.getElementById('edit-index').value = index;
+        document.getElementById('btn-submit-text').innerText = "Speichern";
+        if(m.image) {
+            document.getElementById('preview-img-element').src = bildUrl(m.image);
+            document.getElementById('preview-img-element').style.display = 'block';
+            document.getElementById('upload-text').style.display = 'none';
+        }
+    }
+
+    function deleteMember(index) {
+        if(confirm("Löschen?")) {
+            fetch(API_BASE + '?action=team_delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ index: index }) })
+            .then(res => res.json()).then(resData => { if(resData.success) { teamList = resData.data; renderTable(); } });
+        }
+    }
+
+    function clearForm() {
+        document.getElementById('input-name').value = ""; document.getElementById('input-seit').value = "";
+        document.getElementById('input-ueber').value = ""; document.getElementById('input-fun').value = "";
+        document.getElementById('input-insta').value = ""; document.getElementById('input-email').value = "";
+        document.getElementById('edit-index').value = "-1"; document.getElementById('btn-submit-text').innerText = "Hinzufügen";
+        document.getElementById('preview-img-element').style.display = 'none'; document.getElementById('upload-text').style.display = 'block';
+        fileToUpload = null;
+    }
+  </script>
+</body>
+</html>

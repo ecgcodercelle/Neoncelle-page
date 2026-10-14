@@ -1,0 +1,8 @@
+# Verhindert, dass irgendjemand deine Datenbank-Zugangsdaten über
+# https://deine-domain.de/.env im Browser aufrufen kann.
+<Files ".env">
+  Require all denied
+</Files>
+<Files ".env.example">
+  Require all denied
+</Files>

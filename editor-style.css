@@ -1,0 +1,204 @@
+/* =============================================
+   NEON CELLE — Galerie Editor
+   Nutzt dieselben CSS-Variablen wie style.css /
+   admin.css, damit der Editor zum Rest passt.
+   ============================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body.editor-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-alt);
+}
+
+/* Navbar auf der Editor-Seite fest im Layout statt schwebend,
+   damit sie keine Fläche der Arbeitsfläche verdeckt */
+body.editor-page .navbar {
+    position: static;
+    margin: 0;
+    border-radius: 0;
+    border-width: 0 0 2px 0 !important;
+    height: 64px;
+    flex-shrink: 0;
+}
+
+#editor-main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Linke Steuerungsleiste */
+#sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    background: var(--bg-secondary);
+    border-right: 2px solid var(--accent-neon);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+#sidebar h2 {
+    font-family: var(--font-main);
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: var(--text-primary);
+}
+
+/* Drag & Drop Zone */
+#drop-zone {
+    border: 2px dashed var(--accent-neon);
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-muted);
+    font-family: var(--font-alt);
+    font-size: 0.9rem;
+}
+
+#drop-zone.dragover {
+    background: var(--accent-neon-glow);
+    border-color: var(--accent-pink);
+    color: var(--text-primary);
+}
+
+#save-btn {
+    background: var(--accent-pink);
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: var(--radius-xl);
+    font-family: var(--font-main);
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 20px rgba(232, 68, 90, 0.3);
+}
+
+#save-btn:hover {
+    background: var(--accent-coral);
+    transform: translateY(-2px);
+}
+
+.hinweis {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    font-family: var(--font-alt);
+}
+
+/* Die rechte Arbeitsfläche */
+#editor-canvas {
+    flex-grow: 1;
+    position: relative;
+    background-color: var(--bg-primary);
+    background-image: radial-gradient(#1a1a1a 1px, transparent 1px); /* Subtiles Punktraster */
+    background-size: 20px 20px;
+    overflow: auto;
+}
+
+/* Die beweglichen Bilder */
+.editor-item {
+    position: absolute;
+    cursor: move;
+    border: 2px solid transparent;
+    transition: border-color 0.1s;
+}
+
+.editor-item:hover, .editor-item.active {
+    border-color: var(--accent-neon);
+}
+
+.editor-item img {
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Verhindert, dass das Browser-Standard-Dragging stört */
+    object-fit: contain;
+}
+
+/* Zusätzliche Buttons für Löschen und Größen */
+.sekundaer-btn {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 2px solid var(--accent-neon);
+    padding: 10px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.sekundaer-btn:hover {
+    background: var(--accent-neon-glow);
+}
+
+/* Wenn der Löschmodus scharf geschaltet ist */
+.sekundaer-btn.aktiv {
+    background: var(--accent-pink);
+    border-color: var(--accent-pink);
+    font-weight: 700;
+}
+
+/* Arbeitsfläche bekommt Pink-Schimmer, wenn Löschmodus aktiv ist */
+#editor-canvas.delete-ready .editor-item {
+    outline: 2px dashed var(--accent-pink);
+    cursor: pointer;
+}
+#editor-canvas.delete-ready .editor-item:hover {
+    opacity: 0.5;
+    background: var(--accent-glow);
+}
+
+/* Box für die Größenanpassung */
+.groessen-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 5px;
+    border-top: 1px solid #222;
+    padding-top: 15px;
+}
+
+.groessen-box .label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.mini-btn {
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border: 1px solid #333;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.8rem;
+    text-align: left;
+    transition: var(--transition);
+}
+
+.mini-btn:hover {
+    background: #222;
+    color: #fff;
+    border-color: var(--accent-neon);
+}

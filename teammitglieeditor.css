@@ -1,0 +1,203 @@
+/* Globale Variablen passend zum Design */
+:root {
+    --card-border: #f1f2b5; 
+    --card-label: #e5989b;
+    --card-blue: #5bc0be;
+    --neon-pink: #ff0055;
+    --neon-pink-hover: #ff3377;
+}
+
+.editor-page-bg {
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Layout-Struktur */
+.editor-main-container {
+    max-width: 900px;
+    margin: 120px auto 40px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .editor-main-container {
+        grid-template-columns: 1fr;
+        margin-top: 100px;
+    }
+}
+
+.preview-column, .form-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- STYLING DER ORIGINAL-VISITENKARTE --- */
+.team-card {
+    width: 350px;
+    border: 2px solid var(--card-border);
+    border-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #000000;
+    text-align: left;
+    margin-top: 20px;
+}
+
+.card-header-block {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.card-image-box {
+    width: 100px;
+    height: 140px;
+    background-color: var(--card-blue);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000000;
+    font-size: 24px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.card-header-inputs {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-label {
+    color: var(--card-label);
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.card-display-box {
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    word-break: break-all;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.card-content-block {
+    margin-bottom: 15px;
+}
+
+.card-content-block .card-display-box {
+    height: auto;
+    min-height: 80px;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.card-content-block.funfact-block .card-display-box {
+    min-height: 40px;
+    align-items: center;
+}
+
+.card-social-icons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.card-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 11px;
+}
+
+/* --- STYLING FÜR DIE EINGABEMASKE --- */
+.team-editor {
+    width: 100%;
+    max-width: 380px;
+    background: #111111;
+    border: 1px solid #333333;
+    border-radius: 15px;
+    padding: 25px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.team-editor h3 {
+    margin-top: 0;
+    color: #ffffff;
+    border-bottom: 1px solid #333333;
+    padding-bottom: 10px;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+}
+
+.editor-group {
+    margin-bottom: 15px;
+}
+
+.editor-group label {
+    display: block;
+    font-size: 12px;
+    color: #aaaaaa;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.editor-group input, .editor-group textarea {
+    width: 100%;
+    padding: 10px;
+    background: #1a1a1a;
+    border: 1px solid #444444;
+    color: #ffffff;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.editor-group input:focus, .editor-group textarea:focus {
+    border-color: var(--neon-pink);
+    outline: none;
+}
+
+.editor-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--neon-pink);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+    margin-top: 10px;
+}
+
+.editor-btn:hover {
+    background-color: var(--neon-pink-hover);
+}

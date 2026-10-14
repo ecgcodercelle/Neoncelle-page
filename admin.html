@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Event Manager</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <script src="config.js"></script>
+</head>
+<body class="admin-body">
+
+  <!-- ===== NAVIGATION (wird aus header-admin.html geladen) ===== -->
+  <div id="site-header"></div>
+  <script src="header-loader.js" data-type="admin"></script>
+
+  <main class="admin-main-grid">
+    <section class="left-form-card">
+      <div class="form-group">
+        <div class="label-pink">Event Titel:</div>
+        <input type="text" id="input-title" class="custom-input-box" placeholder="z.B. NEON Jugendabend">
+      </div>
+
+      <!-- NEU: Anmelde-Link Eingabefeld -->
+      <div class="form-group">
+        <div class="label-pink">Anmelde-Link (Optional):</div>
+        <input type="url" id="input-link" class="custom-input-box" placeholder="https://forms.gle... oder PayPal-Link">
+      </div>
+
+      <div class="input-row-flex form-group">
+        <div class="input-col">
+          <div class="label-pink">Start-Datum:</div>
+          <input type="date" id="input-date" class="custom-input-box">
+        </div>
+        <div class="input-col">
+          <div class="label-pink">End-Datum (Optional):</div>
+          <input type="date" id="input-enddate" class="custom-input-box">
+        </div>
+      </div>
+
+      <div class="input-row-flex form-group">
+        <div class="input-col">
+          <div class="label-pink">Uhrzeit:</div>
+          <input type="text" id="input-time" class="custom-input-box" placeholder="z.B. 18:30">
+        </div>
+        <div class="input-col">
+          <div class="label-pink">Event Typ:</div>
+          <select id="input-type" class="custom-select">
+            <option value="default">Standard Event</option>
+            <option value="special">Special Highlight</option>
+            <option value="freizeit">Freizeit / Camp</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="label-pink">Beschreibung:</div>
+        <textarea id="input-desc" class="custom-textarea" rows="3" placeholder="Beschreibung..."></textarea>
+      </div>
+
+      <input type="hidden" id="edit-index" value="-1">
+      <button class="btn-submit-action" onclick="handleFormSubmit()" id="btn-submit-text">Event Speichern</button>
+    </section>
+    <section class="right-table-card">
+      <h2 class="table-headline">Gespeicherte Termine (termine.json)</h2>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Titel / Link</th>
+            <th>Uhrzeit / Typ</th>
+            <th>Beschreibung</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody id="table-body-events"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    let eventList = [];
+
+    window.addEventListener('DOMContentLoaded', () => { loadDataFromServer(); });
+
+    function loadDataFromServer() {
+        fetch(API_BASE + '?action=events_list').then(res => res.json()).then(data => {
+            eventList = Array.isArray(data) ? data : [];
+            renderTable();
+        });
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('table-body-events'); tbody.innerHTML = "";
+        if(eventList.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#aaa; padding:20px;">Keine Termine eingetragen.</td></tr>`; return;
+        }
+
+        eventList.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            let datumsAnzeige = item.date || '-';
+            if (item.endDate) datumsAnzeige += ` bis ${item.endDate}`;
+
+            // Link-Status prüfen für die Tabelle
+            const linkStatus = item.link ? `<br><small style="color:#DE5D93; word-break:break-all;">🔗 ${item.link}</small>` : '';
+
+            tr.innerHTML = `
+                <td style="font-weight:bold; color:#D7EC2D;">${datumsAnzeige}</td>
+                <td style="font-weight:bold;">${item.title || '-'}${linkStatus}</td>
+                <td><span style="color:#DE5D93;">${item.time || '-'} Uhr</span> <br> <small style="color:#aaa;">(${item.type || 'default'})</small></td>
+                <td style="color:#cacaca; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.desc || '-'}</td>
+                <td>
+                    <div class="action-btn-group">
+                        <button class="btn-edit" onclick="editEvent(${index})">Bearbeiten</button>
+                        <button class="btn-delete" onclick="deleteEvent(${index})">Löschen</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function handleFormSubmit() {
+        const title = document.getElementById('input-title').value;
+        const date = document.getElementById('input-date').value;
+        if(!title || !date) { alert("Bitte Titel und Startdatum angeben!"); return; }
+
+        const editIndex = parseInt(document.getElementById('edit-index').value);
+
+        const eventData = {
+            title: title,
+            date: date,
+            endDate: document.getElementById('input-enddate').value || undefined,
+            time: document.getElementById('input-time').value,
+            type: document.getElementById('input-type').value,
+            desc: document.getElementById('input-desc').value,
+            link: document.getElementById('input-link').value || undefined // Link mitsenden
+        };
+
+        if (editIndex === -1) { eventList.push(eventData); } else { eventList[editIndex] = eventData; }
+
+        fetch(API_BASE + '?action=events_save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(eventList)
+        }).then(res => {
+            if(res.ok) { renderTable(); clearForm(); alert("Erfolgreich gespeichert!"); }
+        });
+    }
+
+    function editEvent(index) {
+        const item = eventList[index];
+        document.getElementById('input-title').value = item.title || "";
+        document.getElementById('input-date').value = item.date || "";
+        document.getElementById('input-enddate').value = item.endDate || "";
+        document.getElementById('input-time').value = item.time || "";
+        document.getElementById('input-type').value = item.type || "default";
+        document.getElementById('input-desc').value = item.desc || "";
+        document.getElementById('input-link').value = item.link || ""; // Link laden
+        
+        document.getElementById('edit-index').value = index;
+        document.getElementById('btn-submit-text').innerText = "Änderung Speichern";
+    }
+
+    function deleteEvent(index) {
+        if(confirm("Diesen Termin unwiderruflich löschen?")) {
+            eventList.splice(index, 1);
+            fetch(API_BASE + '?action=events_save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(eventList) }).then(res => { if(res.ok) renderTable(); });
+        }
+    }
+
+    function clearForm() {
+        document.getElementById('input-title').value = "";
+        document.getElementById('input-date').value = "";
+        document.getElementById('input-enddate').value = "";
+        document.getElementById('input-time').value = "";
+        document.getElementById('input-type').value = "default";
+        document.getElementById('input-desc').value = "";
+        document.getElementById('input-link').value = "";
+        document.getElementById('edit-index').value = "-1";
+        document.getElementById('btn-submit-text').innerText = "Event Speichern";
+    }
+  </script>
+</body>
+</html>

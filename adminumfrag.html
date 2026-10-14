@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Neon Celle</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <script src="config.js"></script>
+</head>
+<body class="admin-body">
+
+  <!-- ===== NAVIGATION (wird aus header-admin.html geladen) ===== -->
+  <div id="site-header"></div>
+  <script src="header-loader.js" data-type="admin"></script>
+
+<section class="admin-section">
+  <div class="admin-container">
+    <h1 class="admin-title">Neue Umfrage erstellen ⚡</h1>
+
+    <form id="create-survey-form">
+      <!-- 1. Gesamttitel -->
+      <div class="form-group">
+        <label for="survey-title">Titel der Abstimmung / Umfrage</label>
+        <input type="text" id="survey-title" class="form-control" placeholder="z. B. Jugendgottesdienst Feedback" required>
+      </div>
+
+      <!-- 2. Gesamtbeschreibung -->
+      <div class="form-group">
+        <label for="survey-desc">Beschreibung / Info-Text (optional)</label>
+        <textarea id="survey-desc" class="form-control" rows="2" placeholder="Kurze Einleitung für die Jugendlichen..."></textarea>
+      </div>
+
+      <!-- 3. Externer Google-Link Switch -->
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="is-external-link">
+        <label for="is-external-link">Dies ist eine externe Umfrage (z. B. fertiger Google Forms Link)</label>
+      </div>
+
+      <!-- 4. Custom Link Wrapper -->
+      <div class="form-group hidden" id="custom-link-wrapper">
+        <label for="survey-link">Custom Link (Google Forms URL)</label>
+        <input type="url" id="survey-link" class="form-control" placeholder="https://google.com...">
+      </div>
+
+      <!-- CONTAINER FÜR DYNAMISCHE FRAGEN (TEXT, DROPDOWN, MULTIPLE CHOICE, CHECKBOX) -->
+      <div id="questions-wrapper">
+        <div id="questions-container">
+          <!-- Erste Frage wird per JS generiert -->
+        </div>
+        
+        <div id="add-question-trigger" class="btn-add-question">+ Neue Frage hinzufügen</div>
+      </div>
+
+      <button type="submit" class="btn-submit">In der Datenbank speichern 🚀</button>
+      <div id="form-status" class="status-msg hidden"></div>
+    </form>
+  </div>
+</section>
+
+<!-- ===== ÜBERSICHT & ERGEBNISSE ===== -->
+<section class="admin-section">
+  <div class="admin-container">
+    <h1 class="admin-title">Bestehende Umfragen ⚡</h1>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Titel</th>
+          <th>Erstellt</th>
+          <th>Teilnehmer</th>
+          <th>Status</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody id="umfrage-liste-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="admin-section hidden" id="ergebnis-panel">
+  <div class="admin-container" id="ergebnis-inhalt"></div>
+</section>
+
+<script src="umfrage.js"></script>
+<script src="umfrage-liste.js"></script>
+</body>
+</html>

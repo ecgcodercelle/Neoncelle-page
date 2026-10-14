@@ -1,0 +1,79 @@
+.hidden { display: none !important; }
+
+.umfrage-card {
+  background: var(--bg-card);
+  border: 2px solid var(--accent-neon);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.umfrage-card h3 {
+  font-family: var(--font-main);
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.umfrage-card p {
+  margin-bottom: 18px;
+}
+
+.umfrage-frage-block {
+  margin-bottom: 26px;
+}
+
+.umfrage-frage-block .frage-label {
+  font-family: var(--font-main);
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.umfrage-option-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border: 2px solid var(--border-accent);
+  border-radius: var(--radius-xl);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.umfrage-option-row:hover {
+  border-color: var(--accent-pink);
+}
+
+.umfrage-option-row input {
+  accent-color: var(--accent-pink);
+  width: 18px;
+  height: 18px;
+}
+
+.umfrage-textarea, .umfrage-select {
+  width: 100%;
+  background: transparent;
+  border: 2px solid var(--border-accent);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-alt);
+  font-size: 0.95rem;
+  padding: 14px 16px;
+  box-sizing: border-box;
+}
+
+.umfrage-textarea:focus, .umfrage-select:focus {
+  outline: none;
+  border-color: var(--accent-pink);
+}
+
+.umfrage-status {
+  text-align: center;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  margin-top: 16px;
+}
+.umfrage-status.erfolg { background: #155724; color: #fff; }
+.umfrage-status.fehler { background: #721c24; color: #fff; }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie Editor — Neon Celle Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="editor-style.css">
+    <script src="config.js"></script>
+</head>
+<body class="editor-page">
+
+    <!-- ===== NAVIGATION (wird aus header-admin.html geladen) ===== -->
+    <div id="site-header"></div>
+    <script src="header-loader.js" data-type="admin"></script>
+
+    <div id="editor-main">
+        <div id="sidebar">
+            <h2>Galerie Editor</h2>
+
+            <!-- Drag & Drop Zone -->
+            <div id="drop-zone">
+                <span>Bilder hierher ziehen oder klicken</span>
+                <input type="file" id="file-input" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Löschmodus aktivieren -->
+            <button id="delete-mode-btn" class="sekundaer-btn">Löschmodus: AUS</button>
+
+            <!-- Größen-Schnellanpassung -->
+            <div class="groessen-box">
+                <span class="label">Alle Bilder anpassen:</span>
+                <button id="size-landscape-btn" class="mini-btn">Querformat (400x300)</button>
+                <button id="size-portrait-btn" class="mini-btn">Hochformat (300x400)</button>
+            </div>
+
+            <button id="save-btn">Änderungen speichern</button>
+            <p class="hinweis">Mausrad über einem Bild drehen, um es proportional zu skalieren/vergrößern.</p>
+        </div>
+
+        <!-- Die Arbeitsfläche -->
+        <div id="editor-canvas"></div>
+    </div>
+
+    <script src="editor-script.js"></script>
+</body>
+</html>
+

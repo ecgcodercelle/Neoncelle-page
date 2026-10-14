@@ -1,0 +1,2 @@
+const supabaseUrl = 'https://akddwqnuhnpkykfbbxgl.supabase.co/rest/v1/';
+const supabaseKey = 'sb_publishable_G92WbHSoWK8mkx4_ed-nTw_3fSlaN2z';

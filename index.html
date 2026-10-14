@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neon Celle — ECG Celle Jugend</title>
+  <meta name="description" content="Neon Celle – die Jugendgruppe der Evangelischen Christengemeinde Celle. Events, Fotos und mehr." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="index.css" />
+  <script src="config.js"></script>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION (wird aus header.html geladen) ===== -->
+  <div id="site-header"></div>
+  <script src="header-loader.js" data-type="public"></script>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="container hero-content">
+      <h1 class="hero-title">
+        Wir sind<br/><span class="accent hero-neon">NEON</span><br/>CELLE
+      </h1>
+      <p class="hero-sub">
+        Eine Jugend, die lebt, glaubt und Spaß hat.<br/>
+        Freitags in Celle — du bist eingeladen.
+      </p>
+
+      <div class="hero-scroll">
+        <div class="scroll-indicator">
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== ABOUT ===== -->
+  <section class="section" id="about">
+    <div class="container about-grid">
+      <div class="about-text">
+        <span class="section-label">Wer wir sind</span>
+        <h2 class="section-title">Jugend die <span class="accent">bewegt</span></h2>
+        <div class="divider"></div>
+        <p class="about-tagline">
+          <span class="tag-chip tag-chip--glow-text">Leuchtend</span><span class="tagline-dot">.</span>
+          <span class="tag-chip tag-chip--bright">Hell</span><span class="tagline-dot">.</span>
+          <span class="tag-chip tag-chip--outline">Nicht zu übersehen</span><span class="tagline-dot">.</span>
+          <span class="tag-chip tag-chip--tilt">Herausstechend</span><span class="tagline-dot">.</span>
+          — so wollen wir für andere Menschen sein<span class="tagline-dot">.</span><br/>
+          <span class="tag-chip tag-chip--tilt-alt">Nicht zu unterschätzen</span><span class="tagline-dot">.</span> In dieser Welt, doch <span class="tag-chip tag-chip--glow-text">nicht von dieser Welt</span><span class="tagline-dot">.</span>
+        </p>
+        <p>Neon Celle ist die Jugendgruppe der Evangelischen Christengemeinde Celle. Wir treffen uns regelmäßig, feiern Events, fahren auf Freizeiten und sind füreinander da.</p>
+        <br/>
+        <p>Egal ob du schon dabei bist oder zum ersten Mal kommst — bei uns bist du willkommen.</p>
+        <br/>
+        <div class="about-stats">
+          <div class="stat">
+            <span class="stat-num">20+</span>
+            <span class="stat-label">Jugendliche</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">4x</span>
+            <span class="stat-label">im Monat</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Glaube</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Spaß</span>
+          </div>
+        </div>
+        <p class="about-signature">
+          <span class="sig-we">⚡ WE ⚡</span>
+          <span class="sig-are">⚡ ARE ⚡</span>
+          <span class="sig-neon">⚡ NEON ⚡</span>
+        </p>
+      </div>
+      <div class="about-image">
+        <div class="about-img-wrap">
+          <img src="Logo.png" alt="Neon Celle Logo" class="about-logo-right" />
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- ===== EVENTS ===== -->
+  <section class="section section-dark" id="events">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Kalender</span>
+        <h2 class="section-title">Nächste <span class="accent">Events</span></h2>
+        <p class="section-subtitle">Was als nächstes ansteht — bleib immer up to date.</p>
+      </div>
+      
+      <!-- Der automatische Empfänger-Korb für dein JavaScript -->
+      <div id="eventsTimeline"></div>
+      
+      <div class="events-actions">
+        <a href="lifeplan.html" class="btn btn-primary">Alle Events & Life-Plan ⚡</a>
+      </div>
+    </div>
+  </section>
+  <!-- ===== BIBELVERS DES TAGES SECTION ===== -->
+  <section class="bible-section" id="tagesvers">
+    <div class="bible-container">
+        <div class="bible-card">
+            <div id="bible-text" class="bible-verse">Lade Bibelstelle...</div>
+            <div id="bible-ref" class="bible-reference"></div>
+        </div>
+        
+        <div class="bible-footer-container">
+            <button id="like-trigger" class="bible-like-btn">
+                Gefällt mir <span id="heart-icon" class="bible-heart">❤️</span> (<span id="like-count">0</span>)
+            </button>
+        </div>
+    </div>
+  </section>
+
+  <!-- ===== GALERIE SECTION ===== -->
+  <section class="section" id="gallery">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Momente</span>
+        <h2 class="section-title">Unsere <span class="accent">Galerie</span></h2>
+        <p class="section-subtitle">Hier findest unsere Lieblingsmomente.</p>
+  
+      </div>
+
+      <!-- Das Skript wirft die Bilder genau hier hinein -->
+      <div id="bild-galerie"></div>
+
+    </div>
+  </section>
+
+<div class="headline-container" id="team">
+  <p class="headline-sub">Mitarbeiter</p>
+  <h1 class="headline-main">Team <span>Steckbrief</span></h1>
+</div>
+
+<!-- CONTAINER FÜR DIE KARTEN (NEBENEINANDER ALS GRID) -->
+<div class="team-grid-container" id="team-cards-target">
+    <!-- Wird automatisch per JavaScript befüllt -->
+</div>
+
+<div class="main-faq-container" id="faq">
+    <div class="faq-title-main">FAQ</div>
+    <div id="main-faq-target"><!-- Werden per Script geladen --></div>
+</div>
+
+
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">
+        <img src="Logo.png" alt="Neon Celle Logo" class="logo-img" />
+      </div>
+      <p class="footer-text">Teil der <a href="https://ecg-celle.de" target="_blank" class="footer-link">ECG Celle</a> · Evangelische Christengemeinde Celle</p>
+      <p class="footer-copy">© 2026 Neon Celle. Mit ❤️ gebaut.</p>
+    </div>
+  </footer>
+  <!-- ===== SCRIPTS ===== -->
+  <script src="lifeplan.js"></script>
+ 
+  <script src="bibelversladen.js"></script>
+  <script src="script_galerie.js"></script>
+  <script src="team.js"></script>
+  <script src="faq.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+      // Startet die nackte Server-Engine ohne Speicher-Blockaden
+      if (typeof loadEvents === 'function') loadEvents(); 
+      if (typeof loadTeamData === 'function') loadTeamData();
+      if (typeof loadMainFaqData === 'function') loadMainFaqData();
+  });
+</script>
+
+</body>
+</html>
